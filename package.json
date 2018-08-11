@@ -1,0 +1,30 @@
+{
+  "name": "wormhole",
+  "version": "1.0.0",
+  "description": "Time Travel",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bharathikannano/Wormhole.git"
+  },
+  "author": "Bharathikannan Ramakrishnan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bharathikannano/Wormhole/issues"
+  },
+  "homepage": "https://github.com/bharathikannano/Wormhole#readme",
+  "dependencies": {
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "node-sass": "^4.9.3",
+    "parcel-bundler": "^1.9.7"
+  }
+}
