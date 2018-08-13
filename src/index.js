@@ -5,32 +5,14 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.autocomplete = this.event = this.infowindow = this.marker = this.map = this.place = this.address = null;
-    // this.card = React.createRef();
-    // this.state = {
-    //   'time': new Date()
-    // }
     this.onSelected = this.onSelected.bind(this);
     this.useStrictBounds = this.useStrictBounds.bind(this);
     this.setupClickListener = this.setupClickListener.bind(this);
     this.placeChanged = this.placeChanged.bind(this);
-    // this.getRealTime = this.getRealTime.bind(this);
 
   }
-  shouldComponentUpdate(nextProps, nextState) {
-      console.log(nextProps, nextState);
-      console.log(this.props, this.state);
-      return true;
-    }
   componentDidMount() {
-
-    // window.initGoogleComponents = function () {};
-    // const script = document.createElement('script');
-    // script.type = 'text/javascript';
-    // script.async = true;
-    // script.defer = true;
-    // script.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyAU-XpR88oRoc-ajTkK64ATpBkoGf7R03g&libraries=places&callback=initGoogleComponents";
-    // document.body.insertAdjacentElement('beforeend', script);
-
+setTimeout(function(){
     this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('pac-input'));
     this.event = this.autocomplete.addListener('place_changed', this.onSelected);
     this.map = new google.maps.Map(document.getElementById('map'), {
@@ -42,19 +24,6 @@ export default class App extends React.Component {
     });
     this.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(this.refs.pacCard.current);
 
-    //  var map = new google.maps.Map(document.getElementById('map'), {
-    //   center: {lat: -33.8688, lng: 151.2195},
-    //   zoom: 13
-    // });
-    // var card = document.getElementById('pac-card');
-    // var input = document.getElementById('pac-input');
-    // var types = document.getElementById('type-selector');
-    // var strictBounds = document.getElementById('strict-bounds-selector');
-
-    //map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-
-    // var autocomplete = new google.maps.places.Autocomplete(input);
-
     // Bind the map's bounds (viewport) property to the autocomplete object,
     // so that the autocomplete requests use the current map bounds for the
     // bounds option in the request.
@@ -62,15 +31,6 @@ export default class App extends React.Component {
 
     // Set the data fields to return when the user selects a place.
     this.autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
-
-    // var infowindowContent = document.getElementById('infowindow-content');
-    // var infowindow = new google.maps.InfoWindow();
-    // infowindow = new google.maps.InfoWindow();
-    // this.setState({
-    //    infowindowContent: this.refs.infowindowContent,
-    //   infowindow : this.state.infowindow.setContent(this.refs.infowindowContent),
-    //   infowindow : new google.maps.InfoWindow()
-    // });
 
     this.infowindow = new google.maps.InfoWindow();
     this.infowindow.setContent(this.refs.infowindowContent);
@@ -81,27 +41,13 @@ export default class App extends React.Component {
 
     this.event = this.autocomplete.addListener('place_changed', this.placeChanged);
 
-    // Sets a listener on a radio button to change the filter type on Places
-    // Autocomplete.
-    //  function setupClickListener(id, this.types) {
-    //   var radioButton = document.getElementById(id);
-    //   radioButton.addEventListener('click', function() {
-    //     this.autocomplete.setTypes(types);
-    //   });
-    // }
-
     this.setupClickListener('changetype-all', []);
     this.setupClickListener('changetype-address', ['address']);
     this.setupClickListener('changetype-establishment', ['establishment']);
     this.setupClickListener('changetype-geocode', ['geocode']);
 
-    // document.getElementById('use-strict-bounds')
-    //     .addEventListener('click', function() {
-    //       console.log('Checkbox clicked! New state=' + this.checked);
-    //       this.autocomplete.setOptions({strictBounds: this.checked});
-    //     });
-
     this.event = this.autocomplete.addListener('use-strict-bounds', this.useStrictBounds);
+  }.bind(this), 500);
   }
 
   componentWillUnmount() {
@@ -123,7 +69,6 @@ export default class App extends React.Component {
   placeChanged() {
     this.infowindow.close();
     this.marker.setVisible(false);
-    // var place = this.autocomplete.getPlace();
     this.place = this.autocomplete.getPlace();
 
     if (!this.place.geometry) {
@@ -143,7 +88,6 @@ export default class App extends React.Component {
     this.marker.setPosition(this.place.geometry.location);
     this.marker.setVisible(true);
 
-    //var address = '';
     if (this.place.address_components) {
       this.address = [
         (this.place.address_components[0] && this.place.address_components[0].short_name || ''),
@@ -151,22 +95,13 @@ export default class App extends React.Component {
         (this.place.address_components[2] && this.place.address_components[2].short_name || '')
       ].join(' ');
     }
-    // var infowindowContent = document.getElementById('infowindow-content');
 
     this.refs.infowindowContent.children['place-icon'].src = this.place.icon;
     this.refs.infowindowContent.children['place-name'].textContent = this.place.name;
     this.refs.infowindowContent.children['place-address'].textContent = this.address;
-    //   this.setState({
-    //     infowindow : new google.maps.InfoWindow(),
-    //
-    // });
     this.infowindow.open(this.map, this.marker);
 
   }
-  // getRealTime() {
-  //   this.setState({'time': new Date()});
-  // }
-
   render() {
     return (<React.Fragment>
       <div className="pac-card" id="pac-card" ref="pacCard">
